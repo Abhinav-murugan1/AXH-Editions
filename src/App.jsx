@@ -45,12 +45,12 @@ export default function App() {
     try {
       const saved = localStorage.getItem('axh_hero_card');
       return saved ? JSON.parse(saved) : {
-        image: '/hamilton_poster.png',
+        image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096506/axh_editions_static/hamilton_poster.png',
         category: 'MOTORSPORT COLLECTIBLE',
         title: 'LEWIS HAMILTON // "STILL WE RISE"',
         subtitle: 'DROP 001 // SIGNATURE EDITION',
       };
-    } catch { return { image: '/hamilton_poster.png', category: 'MOTORSPORT COLLECTIBLE', title: 'LEWIS HAMILTON // "STILL WE RISE"', subtitle: 'DROP 001 // SIGNATURE EDITION' }; }
+    } catch { return { image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096506/axh_editions_static/hamilton_poster.png', category: 'MOTORSPORT COLLECTIBLE', title: 'LEWIS HAMILTON // "STILL WE RISE"', subtitle: 'DROP 001 // SIGNATURE EDITION' }; }
   });
 
   const updateHeroCard = (newData) => {
@@ -88,7 +88,7 @@ export default function App() {
           category: 'posters',
           genre: 'MOTORSPORT',
           price: 45,
-          image: '/motorsport_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096507/axh_editions_static/motorsport_poster.jpg',
           stock: 12,
           serial: 'DROP 001 / ITEM 04',
           description: 'A high-contrast cinematic capture of the legendary Nürburgring Nordschleife Carousel, designed for ultra-clean minimalist interiors. Heavy archival print.',
@@ -101,7 +101,7 @@ export default function App() {
           category: 'posters',
           genre: 'MOTORSPORT',
           price: 45,
-          image: '/motorsport_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096507/axh_editions_static/motorsport_poster.jpg',
           stock: 5,
           serial: 'DROP 001 / ITEM 01',
           description: 'Vintage Monte Carlo silhouettes combined with a deep indigo luxury modern overlay. Intentionally numbered volume edition.',
@@ -113,7 +113,7 @@ export default function App() {
           category: 'posters',
           genre: 'FOOTBALL',
           price: 45,
-          image: '/football_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096505/axh_editions_static/football_poster.jpg',
           stock: 8,
           serial: 'DROP 001 / ITEM 02',
           description: 'A geometric visual representation of San Siro stadium under deep amber lights. Crafted for modern football enthusiasts.',
@@ -125,7 +125,7 @@ export default function App() {
           category: 'framed',
           genre: 'FOOTBALL',
           price: 75,
-          image: '/football_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096505/axh_editions_static/football_poster.jpg',
           stock: 15,
           serial: 'DROP 001 / ITEM 03',
           description: 'Matte black minimal framed edition of our iconic Anfield Kop silhouette. Arrives pre-mounted with protective museum-grade cover.',
@@ -138,7 +138,7 @@ export default function App() {
           category: 'posters',
           genre: 'CINEMA',
           price: 50,
-          image: '/motorsport_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096507/axh_editions_static/motorsport_poster.jpg',
           stock: 20,
           serial: 'CATALOGUE / CORE',
           description: 'An abstract typographic poster celebrating independent cinema art culture. Soft ivory styling on premium black backdrop.',
@@ -151,7 +151,7 @@ export default function App() {
           category: 'posters',
           genre: 'GAMING',
           price: 45,
-          image: '/football_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096505/axh_editions_static/football_poster.jpg',
           stock: 14,
           serial: 'CATALOGUE / CORE',
           description: 'Neon indigo aesthetic layout celebrating retro arcade design culture and minimal grid styling.',
@@ -163,7 +163,7 @@ export default function App() {
           category: 'stickers',
           genre: 'MOTORSPORT',
           price: 15,
-          image: '/motorsport_poster.png',
+          image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096507/axh_editions_static/motorsport_poster.jpg',
           stock: 40,
           serial: 'DROP 001 / ACCS',
           description: 'A curated bundle of 5 mini collectible sticker packs featuring premium matte paper print and minimal motorsport silhouettes.',
