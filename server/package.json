@@ -1,0 +1,20 @@
+{
+  "name": "axh-editions-backend",
+  "version": "1.0.0",
+  "description": "Premium backend API for AXH Editions e-commerce platform connecting to MongoDB Atlas.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cloudinary": "^2.10.0",
+    "connect-mongo": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.19.0",
+    "mongodb": "^6.5.0"
+  }
+}
