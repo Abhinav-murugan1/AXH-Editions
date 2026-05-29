@@ -730,7 +730,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
               <div className="hero-preview-card">
                 <div
                   className="hero-preview-img"
-                  style={{ backgroundImage: `url('${heroCard.image || '/hamilton_poster.png'}')` }}
+                  style={{ backgroundImage: `url('${heroCard.image || 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096506/axh_editions_static/hamilton_poster.png'}')` }}
                 />
                 <div className="hero-preview-gradient" />
                 <div className="hero-preview-text">
@@ -835,7 +835,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
                 className="cancel-pill-btn"
                 style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }}
                 onClick={() => onHeroCardChange({
-                  image: '/hamilton_poster.png',
+                  image: 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096506/axh_editions_static/hamilton_poster.png',
                   category: 'MOTORSPORT COLLECTIBLE',
                   title: 'LEWIS HAMILTON // "STILL WE RISE"',
                   subtitle: 'DROP 001 // SIGNATURE EDITION',

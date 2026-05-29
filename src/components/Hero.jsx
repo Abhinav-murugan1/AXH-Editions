@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 
 export default function Hero({ onExploreClick, onCustomClick, heroCard = {} }) {
   const {
-    image = '/hamilton_poster.png',
+    image = 'https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096506/axh_editions_static/hamilton_poster.png',
     category = 'MOTORSPORT COLLECTIBLE',
     title = 'LEWIS HAMILTON // "STILL WE RISE"',
     subtitle = 'DROP 001 // SIGNATURE EDITION',
@@ -373,7 +373,7 @@ export default function Hero({ onExploreClick, onCustomClick, heroCard = {} }) {
         .art-poster-inner {
           position: absolute;
           inset: 0;
-          background-image: url('/hamilton_poster.png'); /* Set uploaded Hamilton poster */
+          background-image: url('https://res.cloudinary.com/dsgoqckqh/image/upload/v1780096506/axh_editions_static/hamilton_poster.png'); /* Set uploaded Hamilton poster */
           background-size: cover;
           background-position: center;
           display: flex;
