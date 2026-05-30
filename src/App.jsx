@@ -350,7 +350,7 @@ export default function App() {
                         <span className="reduced-genre">{product.genre}</span>
                         <h4 className="reduced-name">{product.name}</h4>
                         <div className="reduced-footer">
-                          <span className="reduced-price">${product.price}</span>
+                          <span className="reduced-price">₹{product.price}</span>
                           <span className="reduced-link-btn">COLLECT NOW →</span>
                         </div>
                       </div>

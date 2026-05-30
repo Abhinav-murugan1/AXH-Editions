@@ -136,7 +136,7 @@ export default function Checkout({ cartItems, grandTotal, appliedDiscount, onClo
                   </div>
 
                   <button type="submit" className="btn-primary checkout-pay-btn">
-                    AUTHORIZE PAYMENTS • ${grandTotal.toFixed(2)}
+                    AUTHORIZE PAYMENTS • ₹{grandTotal.toFixed(2)}
                   </button>
 
                   <div className="ssl-badge-assurance">
@@ -163,7 +163,7 @@ export default function Checkout({ cartItems, grandTotal, appliedDiscount, onClo
                       <p>{item.size} • {item.framed ? 'Framed Edition' : 'Archival Poster'}</p>
                       <span className="summary-qty">QTY: {item.quantity}</span>
                     </div>
-                    <span className="summary-price">${item.price * item.quantity}</span>
+                    <span className="summary-price">₹{item.price * item.quantity}</span>
                   </div>
                 ))}
               </div>
@@ -171,21 +171,21 @@ export default function Checkout({ cartItems, grandTotal, appliedDiscount, onClo
               <div className="summary-math-block">
                 <div className="math-row">
                   <span>SUBTOTAL</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
                 </div>
                 {appliedDiscount > 0 && (
                   <div className="math-row discount-glow">
                     <span>COUPON DISCOUNT ({appliedDiscount}%)</span>
-                    <span>-${discountAmount.toFixed(2)}</span>
+                    <span>-₹{discountAmount.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="math-row">
                   <span>SHIPPING FREIGHT</span>
-                  <span>{shippingFee === 0 ? 'FREE' : `$${shippingFee.toFixed(2)}`}</span>
+                  <span>{shippingFee === 0 ? 'FREE' : `₹${shippingFee.toFixed(2)}`}</span>
                 </div>
                 <div className="math-row grand-total-row">
                   <span>TOTAL AUTHORIZED</span>
-                  <span>${grandTotal.toFixed(2)}</span>
+                  <span>₹{grandTotal.toFixed(2)}</span>
                 </div>
               </div>
             </div>

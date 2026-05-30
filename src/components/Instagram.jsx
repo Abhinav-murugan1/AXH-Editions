@@ -25,17 +25,19 @@ export default function Instagram() {
   const feedItems = [
     {
       id: 1,
-      tag: '#motorsport',
+      tag: '#motorsports',
       likes: '1.2k',
       comments: 48,
-      bg: 'linear-gradient(135deg, #111326 0%, #2b3568 100%)',
+      bg: 'url("/motorsport_poster.png")',
+      link: 'https://www.instagram.com/p/DYencGZTlMf/',
     },
     {
       id: 2,
-      tag: '#footballculture',
+      tag: '#football',
       likes: '840',
       comments: 24,
-      bg: 'linear-gradient(135deg, #09080d 0%, #1c223c 100%)',
+      bg: 'url("/football_poster.png")',
+      link: 'https://www.instagram.com/p/DYwEe8tDD2A/?img_index=1',
     },
     {
       id: 3,
@@ -43,6 +45,7 @@ export default function Instagram() {
       likes: '2.1k',
       comments: 89,
       bg: 'linear-gradient(135deg, #2b3568 0%, #c86b3a 100%)',
+      link: 'https://www.instagram.com/axheditions/',
     },
     {
       id: 4,
@@ -50,6 +53,7 @@ export default function Instagram() {
       likes: '1.5k',
       comments: 62,
       bg: 'linear-gradient(135deg, #09080d 0%, #7b73d9 100%)',
+      link: 'https://www.instagram.com/axheditions/',
     },
   ];
 
@@ -60,7 +64,9 @@ export default function Instagram() {
           <InstaIcon size={14} style={{ color: 'var(--color-violet)' }} />
           <span>VISUAL COMMUNITY</span>
         </div>
-        <h2 className="section-title-editorial">@AXHEDITIONS</h2>
+        <a href="https://www.instagram.com/axheditions/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+          <h2 className="section-title-editorial" style={{ cursor: 'pointer' }}>@AXHEDITIONS</h2>
+        </a>
         <p className="section-subtitle-editorial flashy-modern-text">
           Connect with modern design culture. Share your spaces with our collectible drops using the hashtag <span style={{ color: 'var(--color-violet)' }}>#axheditions</span>.
         </p>
@@ -68,7 +74,14 @@ export default function Instagram() {
 
       <div className="instagram-grid">
         {feedItems.map((item) => (
-          <div key={item.id} className="insta-card glass-panel">
+          <a
+            key={item.id}
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="insta-card glass-panel"
+            style={{ textDecoration: 'none', display: 'block' }}
+          >
             <div className="insta-card-media" style={{ background: item.bg }}>
               {/* Overlay styling for simulated Instagram feel */}
               <div className="insta-hover-overlay">
@@ -90,7 +103,7 @@ export default function Instagram() {
                 <span className="insta-card-tag">{item.tag}</span>
               </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
 
@@ -121,6 +134,9 @@ export default function Instagram() {
           align-items: center;
           justify-content: center;
           transition: var(--transition-smooth);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
         }
 
         .insta-artwork-placeholder {

@@ -87,7 +87,7 @@ export default function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onR
                           <Plus size={12} />
                         </button>
                       </div>
-                      <span className="item-price-total">${item.price * item.quantity}</span>
+                      <span className="item-price-total">₹{item.price * item.quantity}</span>
                     </div>
                   </div>
                 </div>
@@ -120,26 +120,26 @@ export default function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onR
             <div className="pricing-summary-block">
               <div className="summary-row">
                 <span>SUBTOTAL</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>₹{subtotal.toFixed(2)}</span>
               </div>
               {appliedDiscount > 0 && (
                 <div className="summary-row discount-glow">
                   <span>DISCOUNT ({appliedDiscount}%)</span>
-                  <span>-${discountAmount.toFixed(2)}</span>
+                  <span>-₹{discountAmount.toFixed(2)}</span>
                 </div>
               )}
               <div className="summary-row">
                 <span>SHIPPING</span>
-                <span>{shippingFee === 0 ? 'FREE' : `$${shippingFee.toFixed(2)}`}</span>
+                <span>{shippingFee === 0 ? 'FREE' : `₹${shippingFee.toFixed(2)}`}</span>
               </div>
               {shippingFee > 0 && (
                 <div className="free-shipping-tip">
-                  Add <span style={{ color: 'var(--color-violet)' }}>${(150 - subtotal).toFixed(2)}</span> more for Free Shipping
+                  Add <span style={{ color: 'var(--color-violet)' }}>₹{(150 - subtotal).toFixed(2)}</span> more for Free Shipping
                 </div>
               )}
               <div className="summary-row total-row">
                 <span>TOTAL</span>
-                <span className="grand-total-amount">${grandTotal.toFixed(2)}</span>
+                <span className="grand-total-amount">₹{grandTotal.toFixed(2)}</span>
               </div>
             </div>
 
