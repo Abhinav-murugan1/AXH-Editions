@@ -53,7 +53,7 @@ export default function Footer({ onAdminClick }) {
   ];
 
   const socialLinks = [
-    { icon: <Camera size={18} />, label: 'Instagram', href: '#' },
+    { icon: <Camera size={18} />, label: 'Instagram', href: 'https://www.instagram.com/axheditions/' },
     { icon: <Send size={18} />, label: 'Twitter / X', href: '#' },
     { icon: <PlayCircle size={18} />, label: 'YouTube', href: '#' },
     { icon: <Globe size={18} />, label: 'Website', href: '#' },

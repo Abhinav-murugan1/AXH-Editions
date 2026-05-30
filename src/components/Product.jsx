@@ -167,14 +167,14 @@ export default function Product({ product, onClose, onAddToCart }) {
                     onClick={() => setIsFramed(true)}
                   >
                     <span className="variant-label-title">Framed Edition</span>
-                    <span className="variant-label-addon">+$30.00</span>
+                    <span className="variant-label-addon">+₹30.00</span>
                   </button>
                   <button 
                     className={`variant-toggle-btn ${!isFramed ? 'active' : ''}`}
                     onClick={() => setIsFramed(false)}
                   >
                     <span className="variant-label-title">Archival Poster Only</span>
-                    <span className="variant-label-addon">+$0.00</span>
+                    <span className="variant-label-addon">+₹0.00</span>
                   </button>
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function Product({ product, onClose, onAddToCart }) {
                     >
                       <span className="dim-name">{dim.id}</span>
                       <span className="dim-desc">{dim.desc}</span>
-                      <span className="dim-addon">+{dim.addon > 0 ? `$${dim.addon}` : 'Free'}</span>
+                      <span className="dim-addon">+{dim.addon > 0 ? `₹${dim.addon}` : 'Free'}</span>
                     </button>
                   ))}
                 </div>
@@ -209,7 +209,7 @@ export default function Product({ product, onClose, onAddToCart }) {
                   <span className="pricing-title">ESTIMATED PRICE</span>
                   <span className="price-desc">Custom options applied</span>
                 </div>
-                <div className="pricing-amount">${totalPrice}</div>
+                <div className="pricing-amount">₹{totalPrice}</div>
               </div>
 
               <div className="main-actions-row">

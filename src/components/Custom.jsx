@@ -171,7 +171,7 @@ export default function Custom({ onAddCustomToCart }) {
             {/* Price badge */}
             <div className="cs-price-badge">
               <span className="cs-price-label">LIVE ESTIMATE</span>
-              <span className="cs-price-value">${totalPrice}.00</span>
+              <span className="cs-price-value">₹{totalPrice}.00</span>
             </div>
           </div>
         </div>
@@ -335,8 +335,8 @@ export default function Custom({ onAddCustomToCart }) {
                     <div className="cs-size-grid">
                       {[
                         { sz: 'A5', dim: '148 × 210mm', delta: '—'    },
-                        { sz: 'A4', dim: '210 × 297mm', delta: '+$10' },
-                        { sz: 'A3', dim: '297 × 420mm', delta: '+$25' },
+                        { sz: 'A4', dim: '210 × 297mm', delta: '+₹10' },
+                        { sz: 'A3', dim: '297 × 420mm', delta: '+₹25' },
                       ].map(({ sz, dim, delta }) => (
                         <button
                           key={sz}
@@ -362,7 +362,7 @@ export default function Custom({ onAddCustomToCart }) {
                       >
                         <Frame size={18} className="cs-mount-icon" />
                         <span className="cs-mount-name">FRAMED</span>
-                        <span className="cs-mount-desc">Solid wood gallery mount +$30</span>
+                        <span className="cs-mount-desc">Solid wood gallery mount +₹30</span>
                       </button>
                       <button
                         type="button"
@@ -427,20 +427,20 @@ export default function Custom({ onAddCustomToCart }) {
                   <div className="cs-invoice">
                     <div className="cs-invoice-row">
                       <span>Base design fee</span>
-                      <span>$45.00</span>
+                      <span>₹45.00</span>
                     </div>
                     <div className="cs-invoice-row">
                       <span>Size upgrade [{size}]</span>
-                      <span>{sizeMultiplier > 0 ? `+$${sizeMultiplier}.00` : '—'}</span>
+                      <span>{sizeMultiplier > 0 ? `+₹${sizeMultiplier}.00` : '—'}</span>
                     </div>
                     <div className="cs-invoice-row">
                       <span>Gallery mount [{isFramed ? 'Framed' : 'Unframed'}]</span>
-                      <span>{frameAddon > 0 ? `+$${frameAddon}.00` : '—'}</span>
+                      <span>{frameAddon > 0 ? `+₹${frameAddon}.00` : '—'}</span>
                     </div>
                     <div className="cs-invoice-divider" />
                     <div className="cs-invoice-total">
                       <span>TOTAL ESTIMATE</span>
-                      <span className="cs-invoice-amount">${totalPrice}.00</span>
+                      <span className="cs-invoice-amount">₹{totalPrice}.00</span>
                     </div>
                   </div>
 
@@ -1323,17 +1323,31 @@ export default function Custom({ onAddCustomToCart }) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 0.4rem;
-          color: rgba(245,243,239,0.35);
-          font-family: var(--font-sans);
+          gap: 0.5rem;
+          background: rgba(37, 211, 102, 0.08);
+          color: #25d366;
+          border: 1px solid rgba(37, 211, 102, 0.25);
+          padding: 0.85rem 1.25rem;
+          font-family: var(--font-display);
           font-size: 0.65rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
           text-decoration: none;
           text-align: center;
-          transition: color 0.25s;
-          line-height: 1.5;
-          flex-wrap: wrap;
+          transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+          cursor: pointer;
+          margin-top: 0.5rem;
+          box-shadow: 0 4px 15px rgba(37, 211, 102, 0.05);
+          width: 100%;
+          box-sizing: border-box;
         }
-        .cs-whatsapp:hover { color: #25d366; }
+        .cs-whatsapp:hover {
+          background: rgba(37, 211, 102, 0.16);
+          border-color: rgba(37, 211, 102, 0.6);
+          color: #25d366;
+          box-shadow: 0 6px 20px rgba(37, 211, 102, 0.15);
+          transform: translateY(-1px);
+        }
 
         /* ══ SUCCESS ═══════════════════════════════════════════════════════ */
         .cs-success {

@@ -185,7 +185,7 @@ export default function Catalog({ products, onSelectProduct }) {
 
           <div className="card-details-footer">
             <span className="detail-price">
-              {isCustom ? `From $${product.price}` : `$${product.price}`}
+              {isCustom ? `From ₹${product.price}` : `₹${product.price}`}
             </span>
             <span className="acquire-cta-label">
               <span>COLLECT</span>

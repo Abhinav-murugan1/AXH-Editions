@@ -702,7 +702,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
         </div>
         <div className="admin-stat-card glass-panel">
           <span className="stat-label">TOTAL REVENUE</span>
-          <strong className="stat-value">${totalRevenue.toFixed(2)}</strong>
+          <strong className="stat-value">₹{totalRevenue.toFixed(2)}</strong>
           <span className="stat-delta text-violet">Synchronized catalog sales</span>
         </div>
         <div className="admin-stat-card glass-panel">
@@ -906,7 +906,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
 
                 <div className="form-row-group">
                   <div className="form-group flex-1">
-                    <label className="crud-label">BASE PRICE ($)</label>
+                    <label className="crud-label">BASE PRICE (₹)</label>
                     <input 
                       type="number" 
                       value={price} 
@@ -1072,7 +1072,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
                             <span className="badge-drop">{prod.isDrop ? 'DROP' : 'CORE'}</span>
                           </div>
                         </td>
-                        <td><strong>${prod.price}</strong></td>
+                        <td><strong>₹{prod.price}</strong></td>
                         <td>
                           <span className={`stock-indicator ${prod.stock < 5 ? 'critical' : ''}`}>
                             {prod.stock} left
@@ -1304,7 +1304,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
                         <div className="req-specs-meta">
                           <span>SIZE: {req.size}</span>
                           <span>MOUNTING: {req.framed ? 'Framed Edition' : 'Unframed Print'}</span>
-                          <strong className="req-price">${req.price}</strong>
+                          <strong className="req-price">₹{req.price}</strong>
                         </div>
                       </div>
                     </div>
@@ -1357,7 +1357,7 @@ export default function Admin({ API_URL, products, onProductChange, heroCard = {
                               ))}
                             </div>
                           </td>
-                          <td><strong>${ord.total?.toFixed(2)}</strong></td>
+                          <td><strong>₹{ord.total?.toFixed(2)}</strong></td>
                         </tr>
                       ))}
                     </tbody>
