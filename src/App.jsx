@@ -59,7 +59,12 @@ export default function App() {
     localStorage.setItem('axh_hero_card', JSON.stringify(updated));
   };
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  // In production (Cloudflare Pages), VITE_API_URL is empty so requests go to
+  // /api/* on the same domain, proxied by functions/api/[[path]].js.
+  // In local dev, fall back to localhost:5000 directly.
+  const API_URL = import.meta.env.VITE_API_URL !== undefined
+    ? import.meta.env.VITE_API_URL
+    : (import.meta.env.DEV ? 'http://localhost:5000' : '');
 
   // Fetch products and session-based cart on boot
   useEffect(() => {
