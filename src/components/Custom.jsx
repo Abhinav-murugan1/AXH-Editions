@@ -10,17 +10,56 @@ export default function Custom({ onAddCustomToCart }) {
 
   const [imageSrc, setImageSrc]   = useState(null);
   const [imageName, setImageName] = useState('');
-  const [overlayText, setOverlayText]   = useState('YOUR TEXT HERE');
-  const [overlayFont, setOverlayFont]   = useState('syne');
-  const [overlayColor, setOverlayColor] = useState('#F5F3EF');
-  const [overlayColorName, setOverlayColorName] = useState('ivory');
   const [activeGlow, setActiveGlow] = useState(false);
 
-  // New states for premium typography control
-  const [overlayFontSize, setOverlayFontSize]           = useState(1.1); // range: 0.5 to 3.0rem
-  const [overlayOpacity, setOverlayOpacity]             = useState(1.0); // range: 0.1 to 1.0
-  const [overlayBoldness, setOverlayBoldness]           = useState(700); // 100, 300, 500, 700, 900
-  const [overlayLetterSpacing, setOverlayLetterSpacing] = useState(0.06); // range: 0 to 0.4em
+  // Advanced multi-line typography engine states
+  const [overlayLines, setOverlayLines] = useState([
+    {
+      id: 1,
+      text: 'YOUR TEXT HERE',
+      font: 'syne',
+      color: '#F5F3EF',
+      colorName: 'ivory',
+      fontSize: 1.1,
+      opacity: 1.0,
+      boldness: 700,
+      letterSpacing: 0.06,
+    }
+  ]);
+  const [activeLineId, setActiveLineId] = useState(1);
+
+  const addOverlayLine = () => {
+    if (overlayLines.length >= 4) return; // Limit to maximum of 4 lines
+    const nextIndex = overlayLines.length + 1;
+    const newLine = {
+      id: Date.now(),
+      text: nextIndex === 2 ? 'SUBTITLE HERE' : `LINE ${nextIndex} DETAILS`,
+      font: 'clean',
+      color: '#7B73D9',
+      colorName: 'violet',
+      fontSize: 0.8,
+      opacity: 0.8,
+      boldness: 500,
+      letterSpacing: 0.12,
+    };
+    setOverlayLines([...overlayLines, newLine]);
+    setActiveLineId(newLine.id);
+  };
+
+  const removeOverlayLine = (id) => {
+    if (overlayLines.length <= 1) return; // Keep at least one line
+    const updated = overlayLines.filter(line => line.id !== id);
+    setOverlayLines(updated);
+    if (activeLineId === id) {
+      setActiveLineId(updated[0].id);
+    }
+  };
+
+  const updateLineProperty = (id, prop, value) => {
+    setOverlayLines(overlayLines.map(line =>
+      line.id === id ? { ...line, [prop]: value } : line
+    ));
+  };
 
   useEffect(() => {
     const t = setTimeout(() => setActiveGlow(true), 600);
@@ -84,7 +123,7 @@ export default function Custom({ onAddCustomToCart }) {
       price: totalPrice,
       size,
       framed: isFramed,
-      details: `IMAGE: ${imageName || 'None'}, TEXT: ${overlayText.replace(/\n/g, ' / ')}, FONT: ${overlayFont.toUpperCase()}, COLOR: ${overlayColorName.toUpperCase()} (${overlayColor}), FONT_SIZE: ${overlayFontSize}rem, OPACITY: ${overlayOpacity}, BOLDNESS: ${overlayBoldness}, SPACING: ${overlayLetterSpacing}em, DESC: ${description}`,
+      details: `IMAGE: ${imageName || 'None'}, LINES: [${overlayLines.map((line, idx) => `LINE ${idx+1} (${line.text}) [FONT: ${line.font.toUpperCase()}, COLOR: ${line.color}, SIZE: ${line.fontSize}rem, OPACITY: ${line.opacity}, BOLDNESS: ${line.boldness}, SPACING: ${line.letterSpacing}em]`).join(' | ')}], DESC: ${description}`,
       image: imageSrc || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
     };
     onAddCustomToCart(item);
@@ -94,7 +133,20 @@ export default function Custom({ onAddCustomToCart }) {
       setDescription('');
       setImageSrc(null);
       setImageName('');
-      setOverlayText('YOUR TEXT HERE');
+      setOverlayLines([
+        {
+          id: 1,
+          text: 'YOUR TEXT HERE',
+          font: 'syne',
+          color: '#F5F3EF',
+          colorName: 'ivory',
+          fontSize: 1.1,
+          opacity: 1.0,
+          boldness: 700,
+          letterSpacing: 0.06,
+        }
+      ]);
+      setActiveLineId(1);
       setStep(1);
     }, 4500);
   };
@@ -108,10 +160,7 @@ export default function Custom({ onAddCustomToCart }) {
 
       {/* ── Page header ── */}
       <div className="cs-hero">
-        <div className="cs-hero-eyebrow">
-          <Paintbrush size={11} />
-          <span>BESPOKE COMMISSION STUDIO</span>
-        </div>
+
         <h2 className="cs-hero-title">CUSTOM ARTWORK</h2>
         <p className="cs-hero-sub">
           Design your museum-grade collectible — upload, configure typography, choose format and describe your vision. We handle the rest.
@@ -154,24 +203,31 @@ export default function Custom({ onAddCustomToCart }) {
                     </div>
                   )}
 
-                  {/* Text overlay */}
-                  {overlayText && (
-                    <div
-                      className="cs-text-overlay"
-                      style={{ 
-                        fontFamily: getFontFamily(overlayFont), 
-                        color: overlayColor,
-                        fontSize: `${overlayFontSize}rem`,
-                        opacity: overlayOpacity,
-                        fontWeight: overlayBoldness,
-                        letterSpacing: `${overlayLetterSpacing}em`,
-                        whiteSpace: 'pre-wrap',
-                        lineHeight: 1.25,
-                      }}
-                    >
-                      {overlayText}
-                    </div>
-                  )}
+                  {/* Stacked text overlay */}
+                  <div className="cs-text-overlay-stack">
+                    {overlayLines.map((line) => (
+                      <div
+                        key={line.id}
+                        className="cs-text-overlay-line"
+                        style={{ 
+                          fontFamily: getFontFamily(line.font), 
+                          color: line.color,
+                          fontSize: `${line.fontSize}rem`,
+                          opacity: line.opacity,
+                          fontWeight: line.boldness,
+                          letterSpacing: `${line.letterSpacing}em`,
+                          whiteSpace: 'pre-wrap',
+                          lineHeight: 1.25,
+                          textTransform: 'uppercase',
+                          textShadow: '0 2px 12px rgba(0,0,0,0.9)',
+                          wordBreak: 'break-word',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        {line.text}
+                      </div>
+                    ))}
+                  </div>
 
                   {/* Metadata strip */}
                   <div className="cs-meta-strip">
@@ -281,140 +337,191 @@ export default function Custom({ onAddCustomToCart }) {
                     </div>
                   </div>
 
-                  <div className="cs-field">
-                    <label className="cs-label">OVERLAY TEXT (MULTILINE)</label>
-                    <textarea
-                      className="cs-textarea"
-                      placeholder="Enter typography overlay text..."
-                      value={overlayText}
-                      onChange={(e) => setOverlayText(e.target.value)}
-                      maxLength={150}
-                      rows={3}
-                    />
-                  </div>
-
-                  <div className="cs-field">
-                    <label className="cs-label">FONT FAMILY</label>
-                    <div className="cs-font-grid">
-                      {fonts.map((f) => (
+                  {/* Multi-line manager tabs */}
+                  <div className="cs-lines-tabs-row">
+                    {overlayLines.map((line, idx) => (
+                      <div key={line.id} className={`cs-line-tab-wrapper ${activeLineId === line.id ? 'is-active' : ''}`}>
                         <button
-                          key={f.id}
                           type="button"
-                          className={`cs-font-btn ${overlayFont === f.id ? 'is-active' : ''}`}
-                          style={{ fontFamily: f.family }}
-                          onClick={() => setOverlayFont(f.id)}
+                          className="cs-line-tab-btn"
+                          onClick={() => setActiveLineId(line.id)}
                         >
-                          {f.label}
+                          <span>LINE {idx + 1}</span>
                         </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="cs-field">
-                    <label className="cs-label">TEXT COLOUR & SPECTRUM</label>
-                    <div className="cs-color-panel-row">
-                      <div className="cs-color-row">
-                        {colors.map((c) => (
+                        {overlayLines.length > 1 && (
                           <button
-                            key={c.id}
                             type="button"
-                            className={`cs-color-dot ${overlayColorName === c.id ? 'is-active' : ''}`}
-                            style={{ background: c.hex }}
-                            title={c.name}
-                            onClick={() => { setOverlayColor(c.hex); setOverlayColorName(c.id); }}
+                            className="cs-line-tab-delete"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeOverlayLine(line.id);
+                            }}
+                            title="Delete Line"
+                          >
+                            <X size={10} />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    
+                    {overlayLines.length < 4 && (
+                      <button
+                        type="button"
+                        className="cs-line-add-btn"
+                        onClick={addOverlayLine}
+                      >
+                        <span>+ ADD NEW LINE</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Active line control panel */}
+                  {overlayLines.map((line) => {
+                    if (line.id !== activeLineId) return null;
+                    return (
+                      <div key={line.id} className="cs-active-line-controls cs-panel-animate">
+                        
+                        <div className="cs-field">
+                          <label className="cs-label">TEXT CONTENT</label>
+                          <input
+                            type="text"
+                            className="cs-input"
+                            placeholder="Enter text for this line..."
+                            value={line.text}
+                            onChange={(e) => updateLineProperty(line.id, 'text', e.target.value)}
+                            maxLength={40}
                           />
-                        ))}
-                      </div>
-                      
-                      <div className="cs-spectrum-wrapper">
-                        <input 
-                          type="color" 
-                          value={overlayColor.startsWith('#') ? overlayColor : '#f5f3ef'} 
-                          onChange={(e) => {
-                            setOverlayColor(e.target.value);
-                            setOverlayColorName('custom');
-                          }}
-                          className="cs-spectrum-input"
-                          title="Custom Color Spectrum"
-                        />
-                        <span className="cs-spectrum-label">
-                          {overlayColorName === 'custom' ? `CUSTOM (${overlayColor.toUpperCase()})` : 'COLOR SPECTRUM'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                        </div>
 
-                  {/* Sliders for Size, Opacity, Boldness, Letter Spacing */}
-                  <div className="cs-typography-sliders">
-                    <div className="cs-slider-field">
-                      <div className="cs-slider-header">
-                        <span className="cs-slider-label">FONT SIZE</span>
-                        <span className="cs-slider-value">{overlayFontSize}rem</span>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="0.5" 
-                        max="3.0" 
-                        step="0.05" 
-                        value={overlayFontSize} 
-                        onChange={(e) => setOverlayFontSize(parseFloat(e.target.value))} 
-                        className="cs-slider"
-                      />
-                    </div>
+                        <div className="cs-field" style={{ marginTop: '20px' }}>
+                          <label className="cs-label">FONT FAMILY</label>
+                          <div className="cs-font-grid">
+                            {fonts.map((f) => (
+                              <button
+                                key={f.id}
+                                type="button"
+                                className={`cs-font-btn ${line.font === f.id ? 'is-active' : ''}`}
+                                style={{ fontFamily: f.family }}
+                                onClick={() => updateLineProperty(line.id, 'font', f.id)}
+                              >
+                                {f.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
 
-                    <div className="cs-slider-field">
-                      <div className="cs-slider-header">
-                        <span className="cs-slider-label">TEXT OPACITY</span>
-                        <span className="cs-slider-value">{Math.round(overlayOpacity * 100)}%</span>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="0.1" 
-                        max="1.0" 
-                        step="0.05" 
-                        value={overlayOpacity} 
-                        onChange={(e) => setOverlayOpacity(parseFloat(e.target.value))} 
-                        className="cs-slider"
-                      />
-                    </div>
+                        <div className="cs-field" style={{ marginTop: '20px' }}>
+                          <label className="cs-label">TEXT COLOUR & SPECTRUM</label>
+                          <div className="cs-color-panel-row">
+                            <div className="cs-color-row">
+                              {colors.map((c) => (
+                                <button
+                                  key={c.id}
+                                  type="button"
+                                  className={`cs-color-dot ${line.colorName === c.id ? 'is-active' : ''}`}
+                                  style={{ background: c.hex }}
+                                  title={c.name}
+                                  onClick={() => {
+                                    updateLineProperty(line.id, 'color', c.hex);
+                                    updateLineProperty(line.id, 'colorName', c.id);
+                                  }}
+                                />
+                              ))}
+                            </div>
+                            
+                            <div className="cs-spectrum-wrapper">
+                              <input 
+                                type="color" 
+                                value={line.color.startsWith('#') ? line.color : '#f5f3ef'} 
+                                onChange={(e) => {
+                                  updateLineProperty(line.id, 'color', e.target.value);
+                                  updateLineProperty(line.id, 'colorName', 'custom');
+                                }}
+                                className="cs-spectrum-input"
+                                title="Custom Color Spectrum"
+                              />
+                              <span className="cs-spectrum-label">
+                                {line.colorName === 'custom' ? `CUSTOM (${line.color.toUpperCase()})` : 'COLOR SPECTRUM'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
 
-                    <div className="cs-slider-field">
-                      <div className="cs-slider-header">
-                        <span className="cs-slider-label">BOLDNESS (WEIGHT)</span>
-                        <span className="cs-slider-value">
-                          {overlayBoldness === 100 ? 'Thin' : 
-                           overlayBoldness === 300 ? 'Light' : 
-                           overlayBoldness === 500 ? 'Medium' : 
-                           overlayBoldness === 700 ? 'Bold' : 'Black'}
-                        </span>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="100" 
-                        max="900" 
-                        step="200" 
-                        value={overlayBoldness} 
-                        onChange={(e) => setOverlayBoldness(parseInt(e.target.value))} 
-                        className="cs-slider"
-                      />
-                    </div>
+                        {/* Typography sliders specific to this line */}
+                        <div className="cs-typography-sliders">
+                          <div className="cs-slider-field">
+                            <div className="cs-slider-header">
+                              <span className="cs-slider-label">FONT SIZE</span>
+                              <span className="cs-slider-value">{line.fontSize}rem</span>
+                            </div>
+                            <input 
+                              type="range" 
+                              min="0.5" 
+                              max="3.0" 
+                              step="0.05" 
+                              value={line.fontSize} 
+                              onChange={(e) => updateLineProperty(line.id, 'fontSize', parseFloat(e.target.value))} 
+                              className="cs-slider"
+                            />
+                          </div>
 
-                    <div className="cs-slider-field">
-                      <div className="cs-slider-header">
-                        <span className="cs-slider-label">LETTER SPACING</span>
-                        <span className="cs-slider-value">{overlayLetterSpacing}em</span>
+                          <div className="cs-slider-field">
+                            <div className="cs-slider-header">
+                              <span className="cs-slider-label">TEXT OPACITY</span>
+                              <span className="cs-slider-value">{Math.round(line.opacity * 100)}%</span>
+                            </div>
+                            <input 
+                              type="range" 
+                              min="0.1" 
+                              max="1.0" 
+                              step="0.05" 
+                              value={line.opacity} 
+                              onChange={(e) => updateLineProperty(line.id, 'opacity', parseFloat(e.target.value))} 
+                              className="cs-slider"
+                            />
+                          </div>
+
+                          <div className="cs-slider-field">
+                            <div className="cs-slider-header">
+                              <span className="cs-slider-label">BOLDNESS (WEIGHT)</span>
+                              <span className="cs-slider-value">
+                                {line.boldness === 100 ? 'Thin' : 
+                                 line.boldness === 300 ? 'Light' : 
+                                 line.boldness === 500 ? 'Medium' : 
+                                 line.boldness === 700 ? 'Bold' : 'Black'}
+                              </span>
+                            </div>
+                            <input 
+                              type="range" 
+                              min="100" 
+                              max="900" 
+                              step="200" 
+                              value={line.boldness} 
+                              onChange={(e) => updateLineProperty(line.id, 'boldness', parseInt(e.target.value))} 
+                              className="cs-slider"
+                            />
+                          </div>
+
+                          <div className="cs-slider-field">
+                            <div className="cs-slider-header">
+                              <span className="cs-slider-label">LETTER SPACING</span>
+                              <span className="cs-slider-value">{line.letterSpacing}em</span>
+                            </div>
+                            <input 
+                              type="range" 
+                              min="0.0" 
+                              max="0.4" 
+                              step="0.01" 
+                              value={line.letterSpacing} 
+                              onChange={(e) => updateLineProperty(line.id, 'letterSpacing', parseFloat(e.target.value))} 
+                              className="cs-slider"
+                            />
+                          </div>
+                        </div>
+
                       </div>
-                      <input 
-                        type="range" 
-                        min="0.0" 
-                        max="0.4" 
-                        step="0.01" 
-                        value={overlayLetterSpacing} 
-                        onChange={(e) => setOverlayLetterSpacing(parseFloat(e.target.value))} 
-                        className="cs-slider"
-                      />
-                    </div>
-                  </div>
+                    );
+                  })}
 
                   <div className="cs-step-nav">
                     <button type="button" className="cs-back-btn" onClick={() => setStep(1)}>← BACK</button>
@@ -818,23 +925,21 @@ export default function Custom({ onAddCustomToCart }) {
           z-index: 1;
         }
 
-        /* Text overlay */
-        .cs-text-overlay {
+        /* Stacked text overlay */
+        .cs-text-overlay-stack {
           position: absolute;
           left: 50%;
-          bottom: 22%;
+          bottom: 20%;
           transform: translateX(-50%);
           width: 88%;
           text-align: center;
-          font-size: 1.1rem;
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
           z-index: 10;
           pointer-events: none;
-          text-shadow: 0 2px 12px rgba(0,0,0,0.9);
-          word-break: break-word;
-          transition: color 0.3s ease, font-family 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+          align-items: center;
+          transition: all 0.3s ease;
         }
 
         /* Meta strip */
@@ -1722,6 +1827,93 @@ export default function Custom({ onAddCustomToCart }) {
             gap: 1rem;
             padding: 1rem;
           }
+        }
+        /* ── MULTI LINE CUSTOMIZER TABS ── */
+        .cs-lines-tabs-row {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+          border-bottom: 1px solid rgba(245, 243, 239, 0.05);
+          padding-bottom: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .cs-line-tab-wrapper {
+          display: flex;
+          align-items: center;
+          background: rgba(245, 243, 239, 0.02);
+          border: 1px solid rgba(245, 243, 239, 0.08);
+          border-radius: 0px;
+          overflow: hidden;
+          transition: border-color 0.25s, background-color 0.25s;
+        }
+
+        .cs-line-tab-wrapper:hover {
+          border-color: rgba(245, 243, 239, 0.2);
+        }
+
+        .cs-line-tab-wrapper.is-active {
+          background: rgba(123, 115, 217, 0.08);
+          border-color: var(--color-violet);
+        }
+
+        .cs-line-tab-btn {
+          background: transparent;
+          border: none;
+          color: var(--color-muted);
+          padding: 0.5rem 1rem;
+          font-family: var(--font-display);
+          font-size: 0.6rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          cursor: pointer;
+          transition: color 0.2s;
+        }
+
+        .cs-line-tab-wrapper.is-active .cs-line-tab-btn {
+          color: var(--color-violet);
+        }
+
+        .cs-line-tab-wrapper:not(.is-active) .cs-line-tab-btn:hover {
+          color: var(--color-ivory);
+        }
+
+        .cs-line-tab-delete {
+          background: transparent;
+          border: none;
+          border-left: 1px solid rgba(245, 243, 239, 0.08);
+          color: rgba(245, 243, 239, 0.3);
+          padding: 0.5rem 0.6rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: color 0.2s, background-color 0.2s;
+        }
+
+        .cs-line-tab-delete:hover {
+          color: var(--color-orange);
+          background: rgba(200, 107, 58, 0.05);
+        }
+
+        .cs-line-add-btn {
+          background: transparent;
+          border: 1px dashed rgba(123, 115, 217, 0.3);
+          color: var(--color-violet);
+          padding: 0.5rem 1rem;
+          font-family: var(--font-display);
+          font-size: 0.6rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          cursor: pointer;
+          transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+        }
+
+        .cs-line-add-btn:hover {
+          background: rgba(123, 115, 217, 0.06);
+          border-color: var(--color-violet);
+          color: var(--color-ivory);
         }
       `}</style>
     </section>
