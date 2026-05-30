@@ -16,6 +16,12 @@ export default function Custom({ onAddCustomToCart }) {
   const [overlayColorName, setOverlayColorName] = useState('ivory');
   const [activeGlow, setActiveGlow] = useState(false);
 
+  // New states for premium typography control
+  const [overlayFontSize, setOverlayFontSize]           = useState(1.1); // range: 0.5 to 3.0rem
+  const [overlayOpacity, setOverlayOpacity]             = useState(1.0); // range: 0.1 to 1.0
+  const [overlayBoldness, setOverlayBoldness]           = useState(700); // 100, 300, 500, 700, 900
+  const [overlayLetterSpacing, setOverlayLetterSpacing] = useState(0.06); // range: 0 to 0.4em
+
   useEffect(() => {
     const t = setTimeout(() => setActiveGlow(true), 600);
     return () => clearTimeout(t);
@@ -78,7 +84,7 @@ export default function Custom({ onAddCustomToCart }) {
       price: totalPrice,
       size,
       framed: isFramed,
-      details: `IMAGE: ${imageName || 'None'}, TEXT: ${overlayText}, FONT: ${overlayFont.toUpperCase()}, COLOR: ${overlayColorName.toUpperCase()}, DESC: ${description}`,
+      details: `IMAGE: ${imageName || 'None'}, TEXT: ${overlayText.replace(/\n/g, ' / ')}, FONT: ${overlayFont.toUpperCase()}, COLOR: ${overlayColorName.toUpperCase()} (${overlayColor}), FONT_SIZE: ${overlayFontSize}rem, OPACITY: ${overlayOpacity}, BOLDNESS: ${overlayBoldness}, SPACING: ${overlayLetterSpacing}em, DESC: ${description}`,
       image: imageSrc || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
     };
     onAddCustomToCart(item);
@@ -152,7 +158,16 @@ export default function Custom({ onAddCustomToCart }) {
                   {overlayText && (
                     <div
                       className="cs-text-overlay"
-                      style={{ fontFamily: getFontFamily(overlayFont), color: overlayColor }}
+                      style={{ 
+                        fontFamily: getFontFamily(overlayFont), 
+                        color: overlayColor,
+                        fontSize: `${overlayFontSize}rem`,
+                        opacity: overlayOpacity,
+                        fontWeight: overlayBoldness,
+                        letterSpacing: `${overlayLetterSpacing}em`,
+                        whiteSpace: 'pre-wrap',
+                        lineHeight: 1.25,
+                      }}
                     >
                       {overlayText}
                     </div>
@@ -262,19 +277,19 @@ export default function Custom({ onAddCustomToCart }) {
                     <span className="cs-step-num">02</span>
                     <div>
                       <h3 className="cs-panel-title">TYPOGRAPHY</h3>
-                      <p className="cs-panel-desc">Set your title overlay text, font and colour palette.</p>
+                      <p className="cs-panel-desc">Set your title overlay text, font and custom parameters.</p>
                     </div>
                   </div>
 
                   <div className="cs-field">
-                    <label className="cs-label">OVERLAY TEXT</label>
-                    <input
-                      type="text"
-                      className="cs-input"
-                      placeholder="Enter title text…"
+                    <label className="cs-label">OVERLAY TEXT (MULTILINE)</label>
+                    <textarea
+                      className="cs-textarea"
+                      placeholder="Enter typography overlay text..."
                       value={overlayText}
                       onChange={(e) => setOverlayText(e.target.value)}
-                      maxLength={40}
+                      maxLength={150}
+                      rows={3}
                     />
                   </div>
 
@@ -296,19 +311,108 @@ export default function Custom({ onAddCustomToCart }) {
                   </div>
 
                   <div className="cs-field">
-                    <label className="cs-label">TEXT COLOUR</label>
-                    <div className="cs-color-row">
-                      {colors.map((c) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          className={`cs-color-dot ${overlayColorName === c.id ? 'is-active' : ''}`}
-                          style={{ background: c.hex }}
-                          title={c.name}
-                          onClick={() => { setOverlayColor(c.hex); setOverlayColorName(c.id); }}
+                    <label className="cs-label">TEXT COLOUR & SPECTRUM</label>
+                    <div className="cs-color-panel-row">
+                      <div className="cs-color-row">
+                        {colors.map((c) => (
+                          <button
+                            key={c.id}
+                            type="button"
+                            className={`cs-color-dot ${overlayColorName === c.id ? 'is-active' : ''}`}
+                            style={{ background: c.hex }}
+                            title={c.name}
+                            onClick={() => { setOverlayColor(c.hex); setOverlayColorName(c.id); }}
+                          />
+                        ))}
+                      </div>
+                      
+                      <div className="cs-spectrum-wrapper">
+                        <input 
+                          type="color" 
+                          value={overlayColor.startsWith('#') ? overlayColor : '#f5f3ef'} 
+                          onChange={(e) => {
+                            setOverlayColor(e.target.value);
+                            setOverlayColorName('custom');
+                          }}
+                          className="cs-spectrum-input"
+                          title="Custom Color Spectrum"
                         />
-                      ))}
-                      <span className="cs-color-name">{colors.find(c => c.id === overlayColorName)?.name}</span>
+                        <span className="cs-spectrum-label">
+                          {overlayColorName === 'custom' ? `CUSTOM (${overlayColor.toUpperCase()})` : 'COLOR SPECTRUM'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sliders for Size, Opacity, Boldness, Letter Spacing */}
+                  <div className="cs-typography-sliders">
+                    <div className="cs-slider-field">
+                      <div className="cs-slider-header">
+                        <span className="cs-slider-label">FONT SIZE</span>
+                        <span className="cs-slider-value">{overlayFontSize}rem</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="0.5" 
+                        max="3.0" 
+                        step="0.05" 
+                        value={overlayFontSize} 
+                        onChange={(e) => setOverlayFontSize(parseFloat(e.target.value))} 
+                        className="cs-slider"
+                      />
+                    </div>
+
+                    <div className="cs-slider-field">
+                      <div className="cs-slider-header">
+                        <span className="cs-slider-label">TEXT OPACITY</span>
+                        <span className="cs-slider-value">{Math.round(overlayOpacity * 100)}%</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="0.1" 
+                        max="1.0" 
+                        step="0.05" 
+                        value={overlayOpacity} 
+                        onChange={(e) => setOverlayOpacity(parseFloat(e.target.value))} 
+                        className="cs-slider"
+                      />
+                    </div>
+
+                    <div className="cs-slider-field">
+                      <div className="cs-slider-header">
+                        <span className="cs-slider-label">BOLDNESS (WEIGHT)</span>
+                        <span className="cs-slider-value">
+                          {overlayBoldness === 100 ? 'Thin' : 
+                           overlayBoldness === 300 ? 'Light' : 
+                           overlayBoldness === 500 ? 'Medium' : 
+                           overlayBoldness === 700 ? 'Bold' : 'Black'}
+                        </span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="100" 
+                        max="900" 
+                        step="200" 
+                        value={overlayBoldness} 
+                        onChange={(e) => setOverlayBoldness(parseInt(e.target.value))} 
+                        className="cs-slider"
+                      />
+                    </div>
+
+                    <div className="cs-slider-field">
+                      <div className="cs-slider-header">
+                        <span className="cs-slider-label">LETTER SPACING</span>
+                        <span className="cs-slider-value">{overlayLetterSpacing}em</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="0.0" 
+                        max="0.4" 
+                        step="0.01" 
+                        value={overlayLetterSpacing} 
+                        onChange={(e) => setOverlayLetterSpacing(parseFloat(e.target.value))} 
+                        className="cs-slider"
+                      />
                     </div>
                   </div>
 
@@ -1475,6 +1579,149 @@ export default function Custom({ onAddCustomToCart }) {
           .cs-step-label { display: none; }
           .cs-panel { padding: 0.85rem 0.75rem; }
           .cs-invoice-row { font-size: 0.62rem; }
+        }
+
+        /* ── TYPOGRAPHY SLIDERS & SPECTRUM ── */
+        .cs-color-panel-row {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          flex-wrap: wrap;
+        }
+
+        .cs-spectrum-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          background: rgba(245, 243, 239, 0.02);
+          border: 1px solid rgba(245, 243, 239, 0.08);
+          padding: 0.45rem 1rem 0.45rem 0.65rem;
+          cursor: pointer;
+        }
+
+        .cs-spectrum-input {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          width: 28px;
+          height: 28px;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+        }
+
+        .cs-spectrum-input::-webkit-color-swatch-wrapper {
+          padding: 0;
+        }
+
+        .cs-spectrum-input::-webkit-color-swatch {
+          border: 1px solid rgba(245,243,239,0.15);
+          border-radius: 50%;
+        }
+
+        .cs-spectrum-label {
+          font-family: monospace;
+          font-size: 0.58rem;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          color: rgba(245, 243, 239, 0.55);
+        }
+
+        .cs-typography-sliders {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.25rem 2rem;
+          background: rgba(17, 19, 38, 0.15);
+          border: 1px solid rgba(245, 243, 239, 0.04);
+          padding: 1.5rem;
+          margin-top: 0.5rem;
+        }
+
+        .cs-slider-field {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .cs-slider-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .cs-slider-label {
+          font-family: var(--font-serif);
+          font-size: 0.62rem;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          color: var(--color-muted);
+        }
+
+        .cs-slider-value {
+          font-family: monospace;
+          font-size: 0.6rem;
+          font-weight: 700;
+          color: var(--color-violet);
+        }
+
+        .cs-slider {
+          -webkit-appearance: none;
+          width: 100%;
+          height: 3px;
+          background: rgba(245, 243, 239, 0.08);
+          outline: none;
+          transition: background 0.3s;
+        }
+
+        .cs-slider::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 3px;
+          cursor: pointer;
+        }
+
+        .cs-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: var(--color-violet);
+          cursor: pointer;
+          margin-top: -4.5px;
+          box-shadow: 0 0 8px rgba(123, 115, 217, 0.6);
+          transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .cs-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.25);
+          background: var(--color-orange);
+          box-shadow: 0 0 10px rgba(200, 107, 58, 0.8);
+        }
+
+        .cs-slider::-moz-range-thumb {
+          width: 12px;
+          height: 12px;
+          border: none;
+          border-radius: 50%;
+          background: var(--color-violet);
+          cursor: pointer;
+          box-shadow: 0 0 8px rgba(123, 115, 217, 0.6);
+          transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .cs-slider::-moz-range-thumb:hover {
+          transform: scale(1.25);
+          background: var(--color-orange);
+          box-shadow: 0 0 10px rgba(200, 107, 58, 0.8);
+        }
+
+        @media (max-width: 640px) {
+          .cs-typography-sliders {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+          }
         }
       `}</style>
     </section>
